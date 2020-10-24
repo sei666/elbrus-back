@@ -7,7 +7,7 @@ from flask_bcrypt import generate_password_hash, check_password_hash
 import hashlib
 import mongoengine_goodjson as gj
 
-salt_hash = "GurgenMishaSosik"
+salt_hash = "ElbrusHackathon"
 
 class RefUrl(gj.Document):
     url = db.StringField(unique=True)
@@ -28,8 +28,11 @@ class Event(gj.Document):
     testingCount = db.IntField(required = True, default = 0)
     registrationList = db.ListField(db.ReferenceField('User'))
     refUrl = db.StringField(required=True,  default = "")
+    urlForTelegram = db.StringField(required=True,  default = "")
     refUrlRegistrationCount = db.IntField(required = True, default = 0)
     timeStart = db.DateTimeField()
+    rating = db.IntField(required = True, default = 0)
+    numberOfRated = db.IntField(required = True, default = 0)
 
 class User(gj.Document):
     typeEntity = db.StringField(required=True, default = "User")

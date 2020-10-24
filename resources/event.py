@@ -65,6 +65,9 @@ class EventRegistrationApi(Resource):
         body = request.get_json()
         url = body.get('refUrl')
         event = Event.objects.get(id = body.get('eventId'))
+        print(authUser.id,event.author.id)
+        if authUser.id == event.author.id:
+            return {"response": "the author cannot register"}, 200
         for x in event.registrationList:
             if x == authUser:
                 return {"response": "already registered"}, 200
