@@ -40,6 +40,7 @@ class User(gj.Document):
     eventsCounter = db.IntField(required=True, default = 0)
     typeProfile = db.StringField(required=True, default = "Base")
     eventsCreatedList = db.ListField(db.ReferenceField('Event'))
+    bonuses = db.IntField(required=True, default = 0)
     refLinkCounts = db.IntField(required=True, default = 0)
     eventsAttendedList = db.ListField(db.ReferenceField('Event'))
     created = db.DateTimeField(default=datetime.datetime.utcnow, exclude_json=True)  

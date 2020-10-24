@@ -40,6 +40,7 @@ class EventAddApi(Resource):
         refUrl.save()
         event.refUrl = refUrl.url
         event.save()
+        authUser.update(push__eventsCreatedList = event)
         return {"event.id": str(event.id)}, 200
 ##--------------------------------------------------------------------------------------------------------------------------------------
 
