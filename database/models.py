@@ -12,8 +12,8 @@ salt_hash = "GurgenMishaSosik"
 class RefUrl(gj.Document):
     url = db.StringField(unique=True)
     event = db.ReferenceField('Event')
-    def hash_url(self, eventId):
-        hash_object = hashlib.sha1((eventId + salt_hash).encode())
+    def hash_url(self, urlId):
+        hash_object = hashlib.sha1((urlId + salt_hash).encode())
         hex_dig = hash_object.hexdigest()
         self.url = hex_dig
 
@@ -21,13 +21,14 @@ class Event(gj.Document):
     typeEntity = db.StringField(required=True, default = "Event")
     typeEvent = db.StringField(required=True, default = "Online")
     author = db.ReferenceField('User')
-    autorFIO = db.StringField(required=True, "")
-    managerFIO = db.StringField(required=True, "")
-    description = db.StringField(required=True, "")
+    authorFIO = db.StringField(required=True, default = "")
+    managerFIO = db.StringField(required=True, default = "")
+    description = db.StringField(required=True, default = "")
     registrationCount = db.IntField(required = True, default = 0)
     testingCount = db.IntField(required = True, default = 0)
-    registrationListCounter = db.ListField(db.ReferenceField('User'))
-    refUrl = db.StringField(required=True, "")
+    registrationList = db.ListField(db.ReferenceField('User'))
+    refUrl = db.StringField(required=True,  default = "")
+    refUrlRegistrationCount = db.IntField(required = True, default = 0)
     timeStart = db.DateTimeField()
 
 class User(gj.Document):
