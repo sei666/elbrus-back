@@ -33,6 +33,8 @@ class Event(gj.Document):
     timeStart = db.DateTimeField()
     rating = db.IntField(required = True, default = 0)
     numberOfRated = db.IntField(required = True, default = 0)
+    ratingList = db.ListField(db.ReferenceField('User'), exclude_json=True)
+    statusEvent = db.StringField(required=True,  default = "Actual")
 
 class User(gj.Document):
     typeEntity = db.StringField(required=True, default = "User")

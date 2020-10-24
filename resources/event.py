@@ -101,3 +101,29 @@ class EventGetByHashApi(Resource):
         return responseMessage
 ##-----------------------------------------------------------------------------------------------------------------------------------------
 
+##-----------------------------------------------------------------Rating The Event--------------------------------------------------------
+class RatingTheEventApi(Resource):
+    @jwt_required
+    def post(self):
+        authUserId = get_jwt_identity()
+        authUser = User.objects.get(id = authUserId)
+        body = request.get_json()
+        event = Event.objects.get(id = body.get('eventId'))
+        rate = body.get('rate')
+        try:
+            rate = int(rate)
+            for x in event.registrationList:
+                if x.id == authUser.id:
+                    for x2 in event.ratingList:
+                        if x2.id == authUser.id:
+                            return {"response": "already voted"}, 200
+                    event.rating += rate
+                    event.numberOfRated += 1
+                    event.save()
+                    event.update(push__ratingList = authUser)
+                    return {"response": "vote accepted"}, 200
+
+            return {"response": "no registration"}, 200
+        except:
+            return {"response": "error value"}, 200
+##-----------------------------------------------------------------------------------------------------------------------------------------
