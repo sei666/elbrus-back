@@ -10,7 +10,7 @@ import datetime
 
 import socket
 # from app import storage
-
+from cryptography.fernet import Fernet
 
 from flask import Response, request, jsonify
 
@@ -24,6 +24,7 @@ NotUniqueError, DoesNotExist, ValidationError, InvalidQueryError
 from resources.errors import SchemaValidationError, EventAlreadyExistsError, \
 InternalServerError, UpdatingEventError, DeletingEventError, EventNotExistsError
 
+keyForFlyer = "_MWygBV7K-rumUcaToDgB6C4hnBAzoG04A2qmSdt_iA="
 
 ##--------------------------------------------------------------- Event Add Api ---------------------------------------------------
 class EventAddApi(Resource):
@@ -127,3 +128,47 @@ class RatingTheEventApi(Resource):
         except:
             return {"response": "error value"}, 200
 ##-----------------------------------------------------------------------------------------------------------------------------------------
+
+##----------------------------------------------------------------Flyer Generator----------------------------------------------------------
+class FlyerGeneratorApi(Resource):
+    def get(self):
+        # cipher_key = Fernet.generate_key()
+        cipher = Fernet(keyForFlyer)
+        userId = "213123123"
+        eventId = "asdasdj"        
+        dictionary ={   
+        "userId": userId,   
+        "eventId": eventId
+        }
+        json_object = json.dumps(dictionary, indent = 4)
+
+        text = str(json_object).encode()
+        encrypted_text = cipher.encrypt(text)
+        print(encrypted_text.decode("utf-8"))
+        # Дешифруем
+        decrypted_text = cipher.decrypt(encrypted_text)
+        print(decrypted_text)
+        return jsonify(json.loads(decrypted_text))
+
+##----------------------------------------------------------------------------------------------------------------------------------------
+
+##--------------------------------------------------------------Flyer Check Api-----------------------------------------------------------
+class FlyerCheckApi(Resource):
+    @jwt_optional
+    def get(self, bigHash):
+        #print(bigHash)
+        authUserId = get_jwt_identity()
+        if authUserId:
+            authUser = User.objects.get(id = authUserId)
+        byteHash = bigHash.encode()
+        cipher = Fernet(keyForFlyer)
+        decrypted_text = cipher.decrypt(byteHash)
+        
+        #print(decrypted_text)
+        #json1 = json.loads(decrypted_text.decode())
+        #print(json1)
+        #return jsonify(json.loads(json1))
+
+
+
+##----------------------------------------------------------------------------------------------------------------------------------------

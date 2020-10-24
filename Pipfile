@@ -20,6 +20,8 @@ minio = "*"
 flask-cors = "*"
 zipstream = "*"
 requests = "*"
+fernet = "*"
+cryptography = "*"
 
 [requires]
 python_version = "3.7"

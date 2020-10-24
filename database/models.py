@@ -35,6 +35,8 @@ class Event(gj.Document):
     numberOfRated = db.IntField(required = True, default = 0)
     ratingList = db.ListField(db.ReferenceField('User'), exclude_json=True)
     statusEvent = db.StringField(required=True,  default = "Actual")
+    flyerPassCount = db.IntField(required = True, default = 0)
+    flyerPassList = db.ListField(db.ReferenceField('User'), exclude_json=True)
 
 class User(gj.Document):
     typeEntity = db.StringField(required=True, default = "User")

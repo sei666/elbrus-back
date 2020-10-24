@@ -1,6 +1,6 @@
 #~elbrus-back/resources/routes.py
 
-from .event import EventAddApi, EventsGetApi, EventRegistrationApi, EventGetByIdApi, EventGetByHashApi,RatingTheEventApi
+from .event import EventAddApi, EventsGetApi, EventRegistrationApi, EventGetByIdApi, EventGetByHashApi,RatingTheEventApi, FlyerGeneratorApi, FlyerCheckApi
 from .auth import SignupApi, LoginApi, CheckUniqUser, CheckUniqEmail, GetUser, GetUserByToken
 from .reset_password import ForgotPassword, ResetPassword
 
@@ -12,6 +12,9 @@ def initialize_routes(api):
  api.add_resource(EventRegistrationApi,'/api/event/eventRegistration')
 
  api.add_resource(RatingTheEventApi, '/api/event/ratingTheEventApi')
+
+ api.add_resource(FlyerGeneratorApi, '/api/event/flyerGeneratorApi')
+ api.add_resource(FlyerCheckApi, '/api/event/flyerCheckApi/<bigHash>')
 
  api.add_resource(SignupApi, '/api/auth/signup')
  api.add_resource(LoginApi, '/api/auth/login')
